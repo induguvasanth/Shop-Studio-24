@@ -17,18 +17,30 @@ function boxFor(it){const r=stage.getBoundingClientRect(),p=current();return {x:
 function paintOverlay(){overlay.replaceChildren();const items=current().items;
  selected.forEach(idx=>{const it=items[idx];if(!it)return;const b=boxFor(it);const o=document.createElement('div');o.className='a4-outline'+(idx!==active?' other':'');o.style.cssText=`left:${b.x}px;top:${b.y}px;width:${b.w}px;height:${b.h}px;transform:rotate(${it.angle}deg)`;overlay.append(o)});
  const it=selItem();if(!it)return;const b=boxFor(it);
- if(cropMode){const cr=cropRect||{x:.1,y:.1,w:.8,h:.8};const c=document.createElement('div');c.className='a4-crop-box';c.style.cssText=`left:${b.x+b.w*cr.x}px;top:${b.y+b.h*cr.y}px;width:${b.w*cr.w}px;height:${b.h*cr.h}px`;overlay.append(c)}
+ const cr=cropMode?(cropRect||{x:.1,y:.1,w:.8,h:.8}):{x:0,y:0,w:1,h:1};
+ const rect={x:b.x+b.w*cr.x,y:b.y+b.h*cr.y,w:b.w*cr.w,h:b.h*cr.h};
+ if(cropMode){const c=document.createElement('div');c.className='a4-crop-box';c.style.cssText=`left:${rect.x}px;top:${rect.y}px;width:${rect.w}px;height:${rect.h}px`;c.setAttribute('title','Drag to move crop area');c.addEventListener('pointerdown',e=>startDrag(e,'move-crop'));overlay.append(c)}
  const points={nw:[0,0],n:[.5,0],ne:[1,0],e:[1,.5],se:[1,1],s:[.5,1],sw:[0,1],w:[0,.5]};
- Object.entries(points).forEach(([key,[px,py]])=>{if(cropMode&&key.length===1)return;const h=document.createElement('div');h.className='a4-handle';h.dataset.h=key;h.style.left=(b.x+px*b.w)+'px';h.style.top=(b.y+py*b.h)+'px';h.addEventListener('pointerdown',e=>startDrag(e,key));overlay.append(h)})}
+ Object.entries(points).forEach(([key,[px,py]])=>{const h=document.createElement('div');h.className='a4-handle';h.dataset.h=key;h.dataset.mode=cropMode?'crop':'resize';h.style.left=(rect.x+px*rect.w)+'px';h.style.top=(rect.y+py*rect.h)+'px';h.addEventListener('pointerdown',e=>startDrag(e,key));overlay.append(h)})}
 function inItem(pt,it){const cx=it.x+it.w/2,cy=it.y+it.h/2,a=-it.angle*Math.PI/180,dx=pt.x-cx,dy=pt.y-cy;const x=dx*Math.cos(a)-dy*Math.sin(a)+it.w/2,y=dx*Math.sin(a)+dy*Math.cos(a)+it.h/2;return x>=0&&y>=0&&x<=it.w&&y<=it.h}
 function choose(e,idx){if(e.ctrlKey||e.metaKey){selected.has(idx)?selected.delete(idx):selected.add(idx)}else if(e.shiftKey&&active>=0){const a=Math.min(idx,active),b=Math.max(idx,active);for(let i=a;i<=b;i++)selected.add(i)}else selected=new Set([idx]);active=selected.has(idx)?idx:(selected.values().next().value??-1);cropMode=false;cropRect=null;syncCrop();paintOverlay();status(`${selected.size} item(s) selected`)}
 function syncCrop(){$('a4ApplyCrop').hidden=!cropMode;$('a4CancelCrop').hidden=!cropMode;$('a4Crop').hidden=cropMode}
-function startDrag(e,handle){e.preventDefault();e.stopPropagation();if(active<0)return;const pt=fromClient(e),it=selItem();drag={mode:cropMode?'crop':'resize',handle,start:pt,original:{x:it.x,y:it.y,w:it.w,h:it.h},origCrop:cropRect?{...cropRect}:null};stage.setPointerCapture(e.pointerId)}
-canvas.addEventListener('pointerdown',e=>{if(drag)return;const pt=fromClient(e),items=current().items;let found=-1;for(let i=items.length-1;i>=0;i--){if(inItem(pt,items[i])){found=i;break}}if(found<0){if(!e.ctrlKey)selected.clear();active=-1;paintOverlay();return}if(!selected.has(found)||e.ctrlKey||e.shiftKey)choose(e,found);drag={mode:'move',start:pt,snapshots:[...selected].map(i=>({i,x:items[i].x,y:items[i].y}))};stage.setPointerCapture(e.pointerId)});
+function startDrag(e,handle){e.preventDefault();e.stopPropagation();if(active<0)return;const pt=fromClient(e),it=selItem();drag={mode:cropMode?(handle==='move-crop'?'move-crop':'crop'):'resize',handle,start:pt,original:{x:it.x,y:it.y,w:it.w,h:it.h},origCrop:cropRect?{...cropRect}:null};stage.setPointerCapture(e.pointerId)}
+canvas.addEventListener('pointerdown',e=>{if(drag||cropMode)return;const pt=fromClient(e),items=current().items;let found=-1;for(let i=items.length-1;i>=0;i--){if(inItem(pt,items[i])){found=i;break}}if(found<0){if(!e.ctrlKey)selected.clear();active=-1;paintOverlay();return}if(!selected.has(found)||e.ctrlKey||e.shiftKey)choose(e,found);drag={mode:'move',start:pt,snapshots:[...selected].map(i=>({i,x:items[i].x,y:items[i].y}))};stage.setPointerCapture(e.pointerId)});
 stage.addEventListener('pointermove',e=>{if(!drag)return;const pt=fromClient(e),dx=pt.x-drag.start.x,dy=pt.y-drag.start.y,p=current();
  if(drag.mode==='move'){for(const q of drag.snapshots){const it=p.items[q.i];if(it){it.x=clamp(q.x+dx,0,p.w-it.w);it.y=clamp(q.y+dy,0,p.h-it.h)}}}
- if(drag.mode==='resize'){const it=selItem(),b=drag.original,h=drag.handle;if(!it)return;let x=b.x,y=b.y,w=b.w,hh=b.h;if(h.includes('w')){x=b.x+dx;w=b.w-dx}if(h.includes('e'))w=b.w+dx;if(h.includes('n')){y=b.y+dy;hh=b.h-dy}if(h.includes('s'))hh=b.h+dy;it.x=clamp(x,0,p.w-25);it.y=clamp(y,0,p.h-25);it.w=clamp(w,25,p.w-it.x);it.h=clamp(hh,25,p.h-it.y)}
- if(drag.mode==='crop'){const it=selItem(),b=drag.original,h=drag.handle,c=drag.origCrop||{x:.1,y:.1,w:.8,h:.8};let [x,y,w,hh]=[c.x,c.y,c.w,c.h],ux=dx/b.w,uy=dy/b.h;if(h.includes('w')){x+=ux;w-=ux}if(h.includes('e'))w+=ux;if(h.includes('n')){y+=uy;hh-=uy}if(h.includes('s'))hh+=uy;cropRect={x:clamp(x,0,.95),y:clamp(y,0,.95),w:clamp(w,.05,1-clamp(x,0,.95)),h:clamp(hh,.05,1-clamp(y,0,.95))}}
+ if(drag.mode==='resize'){const it=selItem(),b=drag.original,h=drag.handle;if(!it)return;const minSize=25;let left=b.x,top=b.y,right=b.x+b.w,bottom=b.y+b.h;
+ if(h.includes('w'))left=clamp(b.x+dx,0,right-minSize);if(h.includes('e'))right=clamp(b.x+b.w+dx,left+minSize,p.w);
+ if(h.includes('n'))top=clamp(b.y+dy,0,bottom-minSize);if(h.includes('s'))bottom=clamp(b.y+b.h+dy,top+minSize,p.h);
+ it.x=left;it.y=top;it.w=right-left;it.h=bottom-top;}
+ if(drag.mode==='crop'||drag.mode==='move-crop'){const it=selItem(),b=drag.original,c=drag.origCrop||{x:.1,y:.1,w:.8,h:.8};let x=c.x,y=c.y,w=c.w,hh=c.h,ux=dx/b.w,uy=dy/b.h;
+ if(drag.mode==='move-crop'){x=clamp(c.x+ux,0,1-c.w);y=clamp(c.y+uy,0,1-c.h)}
+ else{const h=drag.handle;let left=c.x,top=c.y,right=c.x+c.w,bottom=c.y+c.h;
+ if(h.includes('w'))left=clamp(c.x+ux,0,right-.025);if(h.includes('e'))right=clamp(c.x+c.w+ux,left+.025,1);
+ if(h.includes('n'))top=clamp(c.y+uy,0,bottom-.025);if(h.includes('s'))bottom=clamp(c.y+c.h+uy,top+.025,1);
+ x=left;y=top;w=right-left;hh=bottom-top;}
+ cropRect={x,y,w,h:hh};}
+
  draw()});
 function endDrag(){if(drag){drag=null;renderThumbs()}}stage.addEventListener('pointerup',endDrag);stage.addEventListener('pointercancel',endDrag);
 function renderThumbs(){const wrap=$('a4Pages');wrap.replaceChildren();pages.forEach((p,i)=>{const btn=document.createElement('button');btn.type='button';btn.className='a4-page-thumb'+(i===pageIndex?' active':'');const cv=document.createElement('canvas');cv.width=80;cv.height=p.h/p.w*80;const c=cv.getContext('2d');c.fillStyle='#fff';c.fillRect(0,0,cv.width,cv.height);p.items.forEach(it=>{const sx=cv.width/p.w,sy=cv.height/p.h;c.save();c.translate((it.x+it.w/2)*sx,(it.y+it.h/2)*sy);c.rotate(it.angle*Math.PI/180);const s=it.crop||{x:0,y:0,w:1,h:1};try{c.drawImage(it.img,it.img.width*s.x,it.img.height*s.y,it.img.width*s.w,it.img.height*s.h,-it.w*sx/2,-it.h*sy/2,it.w*sx,it.h*sy)}catch{}c.restore()});btn.append(cv,document.createTextNode(`Page ${i+1}`));btn.onclick=()=>{pageIndex=i;selected.clear();active=-1;cropMode=false;syncCrop();draw();renderThumbs()};wrap.append(btn)})}
