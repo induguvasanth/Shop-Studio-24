@@ -1,0 +1,29 @@
+/* Independent A4 arrangement editor; does not change Scan Document or Smart Card. */
+#a4print .a4-tool{min-width:0}
+#a4print .workspace-head{gap:14px;align-items:center}
+#a4print .workspace-head p{color:#9caac0;font-size:13px;margin:6px 0 0}
+#a4print .a4-controls{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0 18px}
+#a4print .a4-controls button{min-height:38px;white-space:nowrap}
+#a4print .a4-layout{display:grid;grid-template-columns:165px minmax(0,1fr);gap:20px}
+#a4print .a4-sidebar{border:1px solid #30394a;border-radius:14px;padding:12px;align-self:start;background:#10141d}
+#a4print .a4-sidebar h3{font-size:14px;margin:0 0 12px}
+#a4print .a4-pages{display:grid;gap:12px;max-height:640px;overflow:auto}
+#a4print .a4-page-thumb{border:2px solid #344155;background:#f5f5f5;border-radius:7px;padding:4px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:5px;color:#19202b;font-size:12px}
+#a4print .a4-page-thumb.active{border-color:#2bd4bf;box-shadow:0 0 0 2px #2bd4bf38}
+#a4print .a4-page-thumb canvas{display:block;width:76px;max-height:110px;object-fit:contain;background:#fff}
+#a4print .a4-hint{color:#a3afc1;font-size:12px;line-height:1.55}
+#a4print .a4-editor{min-width:0;display:flex;flex-direction:column;align-items:center;gap:16px;background:#121722;border:1px solid #273244;padding:20px 12px;border-radius:14px}
+#a4print .a4-stage{position:relative;max-width:100%;width:min(100%,595px);background:#fff;box-shadow:0 6px 30px #0007;touch-action:none;user-select:none;line-height:0}
+#a4print #a4Canvas{display:block;width:100%;height:auto;aspect-ratio:840/1188;background:#fff;touch-action:none}
+#a4print .a4-overlay{position:absolute;inset:0;pointer-events:none;overflow:visible}
+#a4print .a4-outline{position:absolute;border:2px solid #38bdf8;box-shadow:0 0 0 1px #fff8;pointer-events:none;box-sizing:border-box}
+#a4print .a4-outline.other{border-color:#c084fc}
+#a4print .a4-handle{position:absolute;width:12px;height:12px;background:#f8fafc;border:2px solid #0284c7;border-radius:3px;transform:translate(-50%,-50%);pointer-events:auto;touch-action:none;box-shadow:0 1px 5px #0008}
+#a4print .a4-handle[data-h="nw"],#a4print .a4-handle[data-h="se"]{cursor:nwse-resize}
+#a4print .a4-handle[data-h="ne"],#a4print .a4-handle[data-h="sw"]{cursor:nesw-resize}
+#a4print .a4-handle[data-h="e"],#a4print .a4-handle[data-h="w"]{cursor:ew-resize}
+#a4print .a4-handle[data-h="n"],#a4print .a4-handle[data-h="s"]{cursor:ns-resize}
+#a4print .a4-crop-box{position:absolute;border:2px dashed #eab308;background:#eab30811;pointer-events:none;box-sizing:border-box}
+#a4print .a4-footer{display:flex;align-items:center;flex-wrap:wrap;justify-content:center;gap:10px;width:100%}
+#a4print #a4Status{flex:1;min-width:160px;color:#bec9dc;font-size:12px}
+@media(max-width:780px){#a4print .a4-layout{grid-template-columns:minmax(0,1fr)}#a4print .a4-pages{display:flex;max-height:none;overflow:auto}#a4print .a4-sidebar{order:2}}
