@@ -30,3 +30,34 @@
 
 #a4print .a4-handle[data-mode="crop"]{border-color:#f59e0b;background:#fff7ed;z-index:3}
 #a4print .a4-crop-box{z-index:2}
+
+/* Compact A4 screen workspace — output canvas dimensions stay unchanged. */
+#a4print .a4-tool{padding:14px 16px!important}
+#a4print .workspace-head{gap:10px;flex-wrap:wrap}
+#a4print .workspace-head h2{font-size:19px;line-height:1.25;margin:0}
+#a4print .workspace-head p{margin:3px 0 0;font-size:12px}
+#a4print .a4-controls{gap:6px;margin:9px 0 11px}
+#a4print .a4-controls button{min-height:33px;padding:6px 10px;font-size:12px}
+#a4print .a4-layout{grid-template-columns:112px minmax(0,1fr);gap:12px;align-items:start}
+#a4print .a4-sidebar{padding:8px;border-radius:10px}
+#a4print .a4-sidebar h3{margin:0 0 7px;font-size:12px}
+#a4print .a4-pages{gap:7px;max-height:520px}
+#a4print .a4-page-thumb{padding:3px;font-size:11px;gap:3px}
+#a4print .a4-page-thumb canvas{width:55px;max-height:80px}
+#a4print .a4-editor{gap:9px;padding:12px 10px;border-radius:10px}
+#a4print .a4-stage{width:min(100%,430px)}
+#a4print .a4-footer{gap:7px}
+#a4print .a4-footer button{min-height:34px;padding:7px 12px}
+#a4print #a4Status{min-width:110px;font-size:11px}
+@media (max-width:780px){
+ #a4print .a4-layout{grid-template-columns:minmax(0,1fr);gap:9px}
+ #a4print .a4-sidebar{order:2}
+ #a4print .a4-pages{max-height:none;gap:7px}
+ #a4print .a4-page-thumb canvas{width:45px;max-height:64px}
+ #a4print .a4-stage{width:min(100%,410px)}
+}
+@media (max-width:480px){
+ #a4print .a4-tool{padding:10px!important}
+ #a4print .a4-controls button{padding:6px 8px;font-size:11px}
+ #a4print .a4-stage{width:min(100%,350px)}
+}
