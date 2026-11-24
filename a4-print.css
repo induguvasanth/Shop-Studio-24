@@ -23,7 +23,10 @@
 #a4print .a4-handle[data-h="ne"],#a4print .a4-handle[data-h="sw"]{cursor:nesw-resize}
 #a4print .a4-handle[data-h="e"],#a4print .a4-handle[data-h="w"]{cursor:ew-resize}
 #a4print .a4-handle[data-h="n"],#a4print .a4-handle[data-h="s"]{cursor:ns-resize}
-#a4print .a4-crop-box{position:absolute;border:2px dashed #eab308;background:#eab30811;pointer-events:none;box-sizing:border-box}
+#a4print .a4-crop-box{position:absolute;border:2px dashed #eab308;background:#eab30811;pointer-events:auto;touch-action:none;cursor:move;box-sizing:border-box}
 #a4print .a4-footer{display:flex;align-items:center;flex-wrap:wrap;justify-content:center;gap:10px;width:100%}
 #a4print #a4Status{flex:1;min-width:160px;color:#bec9dc;font-size:12px}
 @media(max-width:780px){#a4print .a4-layout{grid-template-columns:minmax(0,1fr)}#a4print .a4-pages{display:flex;max-height:none;overflow:auto}#a4print .a4-sidebar{order:2}}
+
+#a4print .a4-handle[data-mode="crop"]{border-color:#f59e0b;background:#fff7ed;z-index:3}
+#a4print .a4-crop-box{z-index:2}
