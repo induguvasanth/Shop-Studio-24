@@ -122,14 +122,14 @@
     <button class="ghost-btn" id="a4RotatePage">Rotate Page</button>
     <button class="ghost-btn" id="a4RotateLeft">↶ Rotate Item</button>
     <button class="ghost-btn" id="a4RotateRight">↷ Rotate Item</button>
-    <button class="ghost-btn" id="a4Crop">Crop Selected</button>
+    <button class="ghost-btn" id="a4Crop">Select Crop Area</button>
     <button class="ghost-btn" id="a4ApplyCrop" hidden>Apply Crop</button>
     <button class="ghost-btn" id="a4CancelCrop" hidden>Cancel Crop</button>
     <button class="ghost-btn" id="a4Clean">Clean Background</button>
     <button class="danger-btn" id="a4Delete">Remove Selected</button>
   </div>
   <div class="a4-layout">
-    <aside class="a4-sidebar"><h3>Pages</h3><div id="a4Pages" class="a4-pages"></div><p class="a4-hint">Click an item to select. Ctrl+click to select several. Drag to move; use handles to resize. Cropping edits selected image only.</p></aside>
+    <aside class="a4-sidebar"><h3>Pages</h3><div id="a4Pages" class="a4-pages"></div><p class="a4-hint">Click to select an item; Ctrl+click selects multiple. Drag to move, use the eight handles to resize. Select Crop Area to adjust a crop frame.</p></aside>
     <div class="a4-editor">
       <div id="a4Stage" class="a4-stage"><canvas id="a4Canvas" width="840" height="1188" aria-label="A4 sheet editor"></canvas><div id="a4Overlay" class="a4-overlay"></div></div>
       <div class="a4-footer"><span id="a4Status" role="status">White A4 page ready — upload images or a PDF.</span><button class="primary-btn" id="a4ExportPdf">Export PDF</button><button class="ghost-btn" id="a4Print">Print</button></div>
@@ -411,7 +411,7 @@
 <div class="history-list" id="historyList"></div>
 </div>
 </section>
-<section class="section" id="qrorders"><div class="qr-restored-header"><h2>QR Print Orders</h2><p>Customer uploads and owner management. Use Open Owner Portal if the embedded page is blocked.</p><a class="primary-btn" href="Owner.html" rel="noopener" target="_blank">Open Owner Portal</a><a class="ghost-btn" href="Customer.html" rel="noopener" target="_blank">Open Customer Upload</a></div>
+<section class="section" id="qrorders"><div class="qr-restored-header"><a class="primary-btn" href="Owner.html" rel="noopener" target="_blank">Open Owner Portal</a><a class="ghost-btn" href="Customer.html" rel="noopener" target="_blank">Open Customer Upload</a></div>
 <div class="qr-clean-shell">
 <div aria-hidden="true" class="qr-clean-head" hidden="">
 <details class="qr-clean-settings"><summary>Connection settings</summary>
