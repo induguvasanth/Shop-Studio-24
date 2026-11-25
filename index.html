@@ -11,7 +11,8 @@
 <link href="assets/icon.svg" rel="icon" type="image/svg+xml"/>
 <link href="shopstudio.bundle.css?v=23.1" rel="stylesheet"/>
 <meta content="11.8.0" name="shop-build"/>
-<link href="studio-interactions-fix.css" rel="stylesheet"/><link href="a4-print.css?v=2" rel="stylesheet"/></head>
+<link href="studio-interactions-fix.css" rel="stylesheet"/><link href="a4-print.css?v=2" rel="stylesheet"/><link rel="stylesheet" href="ocr-pro.css?v=2"/>
+</head>
 <body>
 <div class="app-shell">
 <aside class="sidebar">
@@ -477,5 +478,6 @@ window.addEventListener('DOMContentLoaded', () => {
   if (layout) layout.value = '4';
   if (paper) paper.value = 'a4';
 }, { once: true });
-</script></body>
+</script><script src="ocr-pro.js?v=2"></script>
+</body>
 </html>
