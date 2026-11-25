@@ -1,5 +1,5 @@
-const CACHE = 'shopstudio-23-print-defaults-v4';
-const CORE = ['./', './index.html', './shopstudio.bundle.js', './shopstudio.bundle.css', './studio-interactions-fix.js', './studio-interactions-fix.css', './a4-print.js', './a4-print.css', './manifest.webmanifest', './assets/icon.svg'];
+const CACHE = 'shopstudio-23-ocr-pro-v1';
+const CORE = ['./', './index.html', './shopstudio.bundle.js', './shopstudio.bundle.css', './studio-interactions-fix.js', './studio-interactions-fix.css', './a4-print.js', './a4-print.css', './manifest.webmanifest', './assets/icon.svg', './ocr-pro.js', './ocr-pro.css'];
 self.addEventListener('install', event => event.waitUntil(caches.open(CACHE).then(cache => cache.addAll(CORE)).then(() => self.skipWaiting())));
 self.addEventListener('activate', event => event.waitUntil(caches.keys().then(keys => Promise.all(keys.filter(key => key !== CACHE).map(key => caches.delete(key)))).then(() => self.clients.claim())));
 self.addEventListener('fetch', event => {
