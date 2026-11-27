@@ -61,3 +61,15 @@
  #a4print .a4-controls button{padding:6px 8px;font-size:11px}
  #a4print .a4-stage{width:min(100%,350px)}
 }
+
+/* Allow direct selection of every image and imported PDF page, including covered items. */
+#a4print .a4-items-title{margin:12px 0 7px;font-size:12px}
+#a4print .a4-items{display:flex;flex-direction:column;gap:5px;max-height:220px;overflow:auto}
+#a4print .a4-item-entry{display:flex;align-items:center;gap:6px;text-align:left;width:100%;padding:6px;border-radius:7px;border:1px solid #38465a;background:#161e2b;color:#d5e2f2;cursor:pointer;min-width:0;font-size:11px}
+#a4print .a4-item-entry.selected{border-color:#c084fc;background:#2b2242}
+#a4print .a4-item-entry.focused{border:2px solid #38bdf8;background:#173349}
+#a4print .a4-item-name{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
+#a4print .a4-item-num{flex:0 0 auto;font-weight:700;color:#67e8f9}
+#a4print .a4-items-empty{font-size:11px;color:#95a7bb}
+#a4print .a4-handle{width:14px;height:14px;z-index:5}
+@media(max-width:780px){#a4print .a4-items{max-height:140px}}
