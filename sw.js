@@ -1,4 +1,4 @@
-const CACHE = 'shopstudio-23-ocr-pro-v1';
+const CACHE = 'shopstudio-23-ocr-pro-v2-a4-multi';
 const CORE = ['./', './index.html', './shopstudio.bundle.js', './shopstudio.bundle.css', './studio-interactions-fix.js', './studio-interactions-fix.css', './a4-print.js', './a4-print.css', './manifest.webmanifest', './assets/icon.svg', './ocr-pro.js', './ocr-pro.css'];
 self.addEventListener('install', event => event.waitUntil(caches.open(CACHE).then(cache => cache.addAll(CORE)).then(() => self.skipWaiting())));
 self.addEventListener('activate', event => event.waitUntil(caches.keys().then(keys => Promise.all(keys.filter(key => key !== CACHE).map(key => caches.delete(key)))).then(() => self.clients.claim())));
